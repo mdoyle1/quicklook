@@ -1,6 +1,7 @@
 # quicklook (Jamf Cloud Server)![quicklook logo](logo.png "quicklook logo")
 
 _a quicklook into your Jamf inventory_
+[_Available in the Apple Store for iOS Devices!_](https://apps.apple.com/us/app/quicklook-jcs/id1513229388)
 
 - [About](#About)
 - [Login View](#loginview)
