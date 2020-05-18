@@ -12,6 +12,7 @@ import SwiftUI
 
 struct Scripts: View {
     @EnvironmentObject var controlCenter: ControlCenter
+    @ObservedObject var viewModel = Defaults()
     @State var scripts: [Responses.Scripts.Results] = []
     @State private var firstLoader:Bool = true
     @State private var searchTerm:String = ""
@@ -23,7 +24,7 @@ struct Scripts: View {
         print(self.scripts[itemIndex].name)
         print(self.scripts[itemIndex].jamfId)
         print("Deleting "+self.scripts[itemIndex].name)
-        ScriptsAPI().deleteScript(id: String(self.scripts[itemIndex].jamfId))
+        ScriptsAPI().deleteScript(defaults: self.viewModel, id: String(self.scripts[itemIndex].jamfId))
         self.scripts.remove(atOffsets: offsets)
     }
     
@@ -41,14 +42,14 @@ struct Scripts: View {
                         
                         self.controlCenter.scriptId = String(script.jamfId)
                         self.controlCenter.scriptName = script.name
-                        self.controlCenter.downloadScript(id: String(script.jamfId))})
+                        ScriptsAPI().downloadScript(defaults:self.viewModel, id:String(script.jamfId), control:self.controlCenter)})
                     {Text(script.name)}
                     
                 }.onDelete(perform: removeItems)
                 
             }
                 
-            .onAppear {if self.firstLoader { ScriptsAPI().getScripts { (scripts) in
+            .onAppear {if self.firstLoader { ScriptsAPI().getScripts(defaults:self.viewModel) { (scripts) in
                 self.scripts = scripts
                 self.firstLoader = false
                 }
@@ -70,9 +71,9 @@ struct Scripts: View {
         var body: some View{
             ScrollView{
                 VStack(alignment:.leading){
-                    
-                    
-                    Text(self.controlCenter.scriptContents).padding(.all, 10)}
+                    Text(self.controlCenter.scriptContents)
+                    .padding(.all, 10).background(Color(.green).opacity(0.25)).cornerRadius(10)
+                        .padding(.all, 10)}
                 HStack{
                     Spacer()
                 }

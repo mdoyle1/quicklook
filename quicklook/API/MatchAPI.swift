@@ -18,8 +18,8 @@ class MatchAPI {
     @ObservedObject var viewModel = Defaults()
     
     
-    func getComputer(search:String, completion: @escaping ([Responses.Computers.Response]) -> ()){
-        let url = $viewModel.defaultURL.wrappedValue+"/JSSResource/computers/match/"+"\(search)"
+    func getComputer(defaults: Defaults, search:String, completion: @escaping ([Responses.Computers.Response]) -> ()){
+        let url = "\(defaults.defaultURL)"+"/JSSResource/computers/match/"+"\(search)"
         // Request options
         var request = URLRequest(url: URL(string:url)!)
         request.httpMethod = "GET"
@@ -29,7 +29,7 @@ class MatchAPI {
         let config = URLSessionConfiguration.default
         
         //API Authentication
-        let userPasswordString = "\($viewModel.usernameStore.wrappedValue):\($viewModel.passwordStore.wrappedValue)"
+        let userPasswordString = "\(defaults.usernameStore):\(defaults.passwordStore)"
         let userPasswordData = userPasswordString.data(using: String.Encoding.utf8)
         let base64EncodedCredential = userPasswordData!.base64EncodedString(options: [])
         let authString = "Basic \(base64EncodedCredential)"

@@ -15,7 +15,7 @@ struct ButtonFormat: ViewModifier {
             .font(.headline)
             .foregroundColor(Color.white)
             .padding(.all, 8)
-            .background(Color.gray).opacity(0.5).cornerRadius(4.0)
-            .padding(.bottom, 8)
+            .background(Color.gray).cornerRadius(4.0)
+           
     }
 }

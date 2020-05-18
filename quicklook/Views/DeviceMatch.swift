@@ -19,15 +19,15 @@ struct DeviceMatch: View {
             HStack{
                 TextField("Search for device...", text: $searchText)
                     .padding(.all, 8)
-                    .background(Color(red:0.5, green: 0.5, blue: 0.5, opacity: 0.3))
+                    .background(Color.gray)
+                    .opacity(0.5)
                     .cornerRadius(4.0)
+                    .padding(.bottom, 8)
                 Button(action: {
                     self.instructions = false
                     MatchAPI().getDevice(search: "*\(self.searchText)*".replacingOccurrences(of: " ", with: "")) { (devices) in
                         self.devices = devices}
-                }){Text("Search").font(.headline).foregroundColor(Color.white).bold()
-                    .padding(.all, 8)
-                    .background(Color.gray).opacity(0.5).cornerRadius(4.0)}
+                }){Text("Search").modifier(ButtonFormat())}
             }
             .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
             if instructions {
@@ -45,7 +45,7 @@ struct DeviceMatch: View {
                                 Text("\(mobileDevice.name ?? "")\n\(mobileDevice.serialNumber ?? "")\nMAC: \(mobileDevice.wifiMACAddress ?? "Not Available")\nUsername: \(mobileDevice.username ?? "")\nAsset Tag: \(mobileDevice.assetTag ?? "N/A")")
                                     .font(.headline).foregroundColor(Color.white).bold()
                                     .padding(.all, 8)
-                                    .background(Color.gray).opacity(0.5).cornerRadius(4.0)
+                                    .background(Color.gray).cornerRadius(4.0)
                                     .padding(.bottom, 8)}
                         }
                     }

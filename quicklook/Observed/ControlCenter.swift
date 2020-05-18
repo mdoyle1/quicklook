@@ -15,17 +15,37 @@ import Combine
 var token:String?
 var mobileConfigPayloads:[Responses.ConfigPayload] = []
 var computerConfigPayloads:[Responses.ConfigPayload] = []
+var saveCredentialAlert = false
+
+
+let savedCredentials = "saved"
+let showCredentialAlert = "credAlert"
+var saved = UserDefaults.standard
+
 
 class ControlCenter: ObservableObject {
+    //var password: String = ""
     
-    var username: String = ""
-    var password: String = ""
+   
+   
     
-    @EnvironmentObject var loginViewModel:ControlCenter
-    @ObservedObject var viewModel = Defaults()
+     
+    
+    @Published var username: String = ""
+    @Published var password: String = ""
+    @Published var jamfurl = ""
     @Published var loginToggle = true
     @Published var mainMenuToggle = false
-    @Published var loading = true
+    @Published var clearCreds = true
+    @Published var logout = false
+
+    //LOGIN ERROR CHECKING
+    @Published var badPassword:Bool = false
+    @Published var loading: Bool = false
+    @Published var isPressed: Bool = false
+    @Published var enterCredentials: Bool = false
+    @Published var getTokenTimer:Bool = false
+    @Published var loginAttempts:Bool = false
     
     //Scripts
     @Published var scriptsJson:Responses.Scripts?
@@ -72,28 +92,7 @@ class ControlCenter: ObservableObject {
     
     //MOBILE CONFIGURATION PROFILE
     
-    func downloadScript(id: String){
-        self.loading = true
-        let url = $viewModel.defaultURL.wrappedValue+"/uapi/v1/scripts/"+"\(id)"+"/download"
-        print(url)
-        print(token ?? "")
-        var request = URLRequest(url: URL(string:url)!)
-        request.httpMethod = "GET"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue("text/plain", forHTTPHeaderField: "accept")
-        request.setValue("Bearer \(token ?? "")", forHTTPHeaderField: "Authorization")
-        
-        let config = URLSessionConfiguration.default
-        URLSession(configuration: config).dataTask(with: request) { (data, response, err) in
-            
-            guard let data = data else {return}
-            
-            DispatchQueue.main.async {
-                self.scriptContents = (String(data:data, encoding: .utf8) ?? "No Details")
-                self.loading = false
-            }
-        }.resume()
-    }
+   
     
     
     

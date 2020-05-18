@@ -11,6 +11,7 @@ import SwiftUI
 struct ComputerMatch: View {
     @State var searchText:String = ""
     @State var computers: [Responses.Computers.Response] = []
+    @ObservedObject var viewModel = Defaults()
     
     @State var instructions = true
     @EnvironmentObject var controlCenter: ControlCenter
@@ -20,18 +21,17 @@ struct ComputerMatch: View {
             HStack{
                 TextField("Search for computer...", text: $searchText)
                     .padding(.all, 8)
-                    .background(Color(red:0.5, green: 0.5, blue: 0.5, opacity: 0.3))
+                    .background(Color.gray)
                     .cornerRadius(4.0)
+                    .opacity(0.5)
+                    .padding(.bottom, 8)
                 Button(action: {
                     self.instructions = false
-                    MatchAPI().getComputer(search: "*\(self.searchText)*".replacingOccurrences(of: " ", with: "")) { (computers) in
+                    MatchAPI().getComputer(defaults: self.viewModel, search: "*\(self.searchText)*".replacingOccurrences(of: " ", with: "")) { (computers) in
                         self.computers = computers
                     }
                     
-                }){Text("Search").font(.headline).foregroundColor(Color.white).bold()
-                    .padding(.all, 8)
-                    .background(Color.gray).opacity(0.5).cornerRadius(4.0)
-                }
+                }){Text("Search").modifier(ButtonFormat())}
                 
             }
             .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
@@ -50,7 +50,7 @@ struct ComputerMatch: View {
                                 Text("\(computer.name ?? "")\nSerial:\(computer.serial_number)\nAsset Tag:\(computer.asset_tag ?? "Not Available")\nUsername: \(computer.username ?? "")")
                                     .font(.headline).foregroundColor(Color.white).bold()
                                     .padding(.all, 8)
-                                    .background(Color.gray).opacity(0.5).cornerRadius(4.0)
+                                    .background(Color.gray).cornerRadius(4.0)
                                     .padding(.bottom, 8)}
                         }
                     }

@@ -11,10 +11,9 @@ import SwiftUI
 
 class ScriptsAPI {
     
-    @ObservedObject var viewModel = Defaults()
     
-    func getScripts(completion: @escaping ([Responses.Scripts.Results]) -> ()){
-        let url = $viewModel.defaultURL.wrappedValue+"/uapi/v1/scripts?page=0&page-size=500&sort=name%3Aasc"
+    func getScripts(defaults: Defaults, completion: @escaping ([Responses.Scripts.Results]) -> ()){
+        let url = "\(defaults.defaultURL)"+"/uapi/v1/scripts?page=0&page-size=500&sort=name%3Aasc"
         // Request options
         var request = URLRequest(url: URL(string:url)!)
         request.httpMethod = "GET"
@@ -37,8 +36,8 @@ class ScriptsAPI {
     
     
     
-    func deleteScript (id: String) {
-        let url = $viewModel.defaultURL.wrappedValue+"/uapi/v1/scripts/"+"\(id)"
+    func deleteScript (defaults: Defaults, id: String) {
+        let url = defaults.defaultURL+"/uapi/v1/scripts/"+"\(id)"
         print(url)
         print(token ?? "")
         var request = URLRequest(url: URL(string:url)!)
@@ -63,5 +62,29 @@ class ScriptsAPI {
         }.resume()
         
     }
+    
+    
+    func downloadScript(defaults:Defaults, id: String, control:ControlCenter){
+            control.loading = true
+           let url = defaults.defaultURL+"/uapi/v1/scripts/"+"\(id)"+"/download"
+           print(url)
+           print(token ?? "")
+           var request = URLRequest(url: URL(string:url)!)
+           request.httpMethod = "GET"
+           request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+           request.setValue("text/plain", forHTTPHeaderField: "accept")
+           request.setValue("Bearer \(token ?? "")", forHTTPHeaderField: "Authorization")
+           
+           let config = URLSessionConfiguration.default
+           URLSession(configuration: config).dataTask(with: request) { (data, response, err) in
+               
+               guard let data = data else {return}
+               
+               DispatchQueue.main.async {
+                control.scriptContents = (String(data:data, encoding: .utf8) ?? "No Details")
+                control.loading = false
+               }
+           }.resume()
+       }
     
 }
