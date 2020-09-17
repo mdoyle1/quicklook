@@ -32,16 +32,7 @@ struct CustomTextField: UIViewRepresentable {
             return true
         }
         
-        
-//        func textFieldShouldClear(_ textField: UITextField) -> Bool {
-//            outer.badPassword = false
-//            outer.loading = false
-//            outer.isPressed = false
-//            outer.enterCredentials = false
-//            outer.getTokenTimer = false
-//            outer.loginAttempts = false
-//            return true
-//        }
+
     }
     
     @State var secure : Bool
@@ -85,10 +76,12 @@ struct Login: View {
     
  
     func clearCredentials(){
-        
         $viewModel.defaultURL.wrappedValue = ""
         $viewModel.passwordStore.wrappedValue = ""
         $viewModel.usernameStore.wrappedValue = ""
+        self.jamfURL = ""
+        self.username = ""
+        self.password = ""
     }
     
     
@@ -103,7 +96,6 @@ struct Login: View {
     var body: some View {
         VStack{
             Text("quicklook jcs").font(.largeTitle)
-                
                 .foregroundColor(Color.white).bold()
                 .shadow(color: Color.gray, radius: blur, x: radX, y: radY)
                 .onAppear{

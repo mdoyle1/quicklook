@@ -48,6 +48,19 @@
 		8B89B430246C835800EA47E2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B89B42F246C835800EA47E2 /* SceneDelegate.swift */; };
 		8B89B432246C837300EA47E2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B89B431246C837300EA47E2 /* ContentView.swift */; };
 		8BF2735A246ED422007A852F /* TokenAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF27359246ED422007A852F /* TokenAPI.swift */; };
+		8BF5836B24E57D2000C67697 /* SFMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836024E57A5C00C67697 /* SFMono-Regular.otf */; };
+		8BF5836C24E57D3800C67697 /* SFMono-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836424E57A5C00C67697 /* SFMono-Bold.otf */; };
+		8BF5836D24E57D3A00C67697 /* SFMono-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836124E57A5C00C67697 /* SFMono-BoldItalic.otf */; };
+		8BF5836E24E57D3E00C67697 /* SFMono-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5835E24E57A5C00C67697 /* SFMono-Heavy.otf */; };
+		8BF5836F24E57D4100C67697 /* SFMono-HeavyItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836224E57A5C00C67697 /* SFMono-HeavyItalic.otf */; };
+		8BF5837024E57D4500C67697 /* SFMono-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5835F24E57A5C00C67697 /* SFMono-Light.otf */; };
+		8BF5837124E57D4A00C67697 /* SFMono-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836824E57A5C00C67697 /* SFMono-LightItalic.otf */; };
+		8BF5837224E57D4E00C67697 /* SFMono-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836524E57A5C00C67697 /* SFMono-Medium.otf */; };
+		8BF5837324E57D5000C67697 /* SFMono-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836924E57A5C00C67697 /* SFMono-MediumItalic.otf */; };
+		8BF5837424E57D5600C67697 /* SFMono-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836624E57A5C00C67697 /* SFMono-RegularItalic.otf */; };
+		8BF5837524E57D5800C67697 /* SFMono-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836324E57A5C00C67697 /* SFMono-Semibold.otf */; };
+		8BF5837624E57D5B00C67697 /* SFMono-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8BF5836724E57A5C00C67697 /* SFMono-SemiboldItalic.otf */; };
+		8BF5837924E5840C00C67697 /* CodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF5837824E5840B00C67697 /* CodeScanner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +128,19 @@
 		8B89B42F246C835800EA47E2 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = Views/SceneDelegate.swift; sourceTree = "<group>"; };
 		8B89B431246C837300EA47E2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ../../JAMFiOS/JAMFiOS/ContentView.swift; sourceTree = "<group>"; };
 		8BF27359246ED422007A852F /* TokenAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAPI.swift; sourceTree = "<group>"; };
+		8BF5835E24E57A5C00C67697 /* SFMono-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Heavy.otf"; sourceTree = "<group>"; };
+		8BF5835F24E57A5C00C67697 /* SFMono-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Light.otf"; sourceTree = "<group>"; };
+		8BF5836024E57A5C00C67697 /* SFMono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Regular.otf"; sourceTree = "<group>"; };
+		8BF5836124E57A5C00C67697 /* SFMono-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-BoldItalic.otf"; sourceTree = "<group>"; };
+		8BF5836224E57A5C00C67697 /* SFMono-HeavyItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-HeavyItalic.otf"; sourceTree = "<group>"; };
+		8BF5836324E57A5C00C67697 /* SFMono-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Semibold.otf"; sourceTree = "<group>"; };
+		8BF5836424E57A5C00C67697 /* SFMono-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Bold.otf"; sourceTree = "<group>"; };
+		8BF5836524E57A5C00C67697 /* SFMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Medium.otf"; sourceTree = "<group>"; };
+		8BF5836624E57A5C00C67697 /* SFMono-RegularItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-RegularItalic.otf"; sourceTree = "<group>"; };
+		8BF5836724E57A5C00C67697 /* SFMono-SemiboldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-SemiboldItalic.otf"; sourceTree = "<group>"; };
+		8BF5836824E57A5C00C67697 /* SFMono-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-LightItalic.otf"; sourceTree = "<group>"; };
+		8BF5836924E57A5C00C67697 /* SFMono-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-MediumItalic.otf"; sourceTree = "<group>"; };
+		8BF5837824E5840B00C67697 /* CodeScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeScanner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,11 +200,13 @@
 			isa = PBXGroup;
 			children = (
 				8B89B431246C837300EA47E2 /* ContentView.swift */,
+				8B89B3BC246C823A00EA47E2 /* AppDelegate.swift */,
 				8B89B42F246C835800EA47E2 /* SceneDelegate.swift */,
+				8BF5837724E5840B00C67697 /* CodeScanner */,
+				8BF5835C24E57A3300C67697 /* Fonts */,
 				8B89B3EC246C828000EA47E2 /* API */,
 				8B89B3FF246C828700EA47E2 /* Codable */,
 				8B89B405246C82A600EA47E2 /* Views */,
-				8B89B3BC246C823A00EA47E2 /* AppDelegate.swift */,
 				8B89B3C2246C823F00EA47E2 /* Assets.xcassets */,
 				8B89B3C7246C823F00EA47E2 /* LaunchScreen.storyboard */,
 				8B89B402246C829400EA47E2 /* Observed */,
@@ -257,6 +285,7 @@
 				8B89B40F246C82A600EA47E2 /* Main.swift */,
 				8B7AB0BF246F162500CE2B5B /* Menu.swift */,
 				8B89B406246C82A600EA47E2 /* DeviceMatch.swift */,
+				8B89B412246C82A600EA47E2 /* ComputerMatch.swift */,
 				8B89B408246C82A600EA47E2 /* Scripts.swift */,
 				8B89B409246C82A600EA47E2 /* Policies.swift */,
 				8B89B40A246C82A600EA47E2 /* Packages.swift */,
@@ -265,7 +294,6 @@
 				8B89B40D246C82A600EA47E2 /* Computer.swift */,
 				8B89B410246C82A600EA47E2 /* ComputerConfig.swift */,
 				8B89B411246C82A600EA47E2 /* MobileConfig.swift */,
-				8B89B412246C82A600EA47E2 /* ComputerMatch.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -281,6 +309,41 @@
 				8B89B426246C82D100EA47E2 /* Defaults.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		8BF5835C24E57A3300C67697 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8BF5835D24E57A3D00C67697 /* SFMono */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		8BF5835D24E57A3D00C67697 /* SFMono */ = {
+			isa = PBXGroup;
+			children = (
+				8BF5836424E57A5C00C67697 /* SFMono-Bold.otf */,
+				8BF5836124E57A5C00C67697 /* SFMono-BoldItalic.otf */,
+				8BF5835E24E57A5C00C67697 /* SFMono-Heavy.otf */,
+				8BF5836224E57A5C00C67697 /* SFMono-HeavyItalic.otf */,
+				8BF5835F24E57A5C00C67697 /* SFMono-Light.otf */,
+				8BF5836824E57A5C00C67697 /* SFMono-LightItalic.otf */,
+				8BF5836524E57A5C00C67697 /* SFMono-Medium.otf */,
+				8BF5836924E57A5C00C67697 /* SFMono-MediumItalic.otf */,
+				8BF5836024E57A5C00C67697 /* SFMono-Regular.otf */,
+				8BF5836624E57A5C00C67697 /* SFMono-RegularItalic.otf */,
+				8BF5836324E57A5C00C67697 /* SFMono-Semibold.otf */,
+				8BF5836724E57A5C00C67697 /* SFMono-SemiboldItalic.otf */,
+			);
+			path = SFMono;
+			sourceTree = "<group>";
+		};
+		8BF5837724E5840B00C67697 /* CodeScanner */ = {
+			isa = PBXGroup;
+			children = (
+				8BF5837824E5840B00C67697 /* CodeScanner.swift */,
+			);
+			path = CodeScanner;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -387,7 +450,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BF5837224E57D4E00C67697 /* SFMono-Medium.otf in Resources */,
+				8BF5836B24E57D2000C67697 /* SFMono-Regular.otf in Resources */,
+				8BF5836D24E57D3A00C67697 /* SFMono-BoldItalic.otf in Resources */,
+				8BF5837024E57D4500C67697 /* SFMono-Light.otf in Resources */,
+				8BF5837624E57D5B00C67697 /* SFMono-SemiboldItalic.otf in Resources */,
+				8BF5837424E57D5600C67697 /* SFMono-RegularItalic.otf in Resources */,
 				8B89B3C9246C823F00EA47E2 /* LaunchScreen.storyboard in Resources */,
+				8BF5837124E57D4A00C67697 /* SFMono-LightItalic.otf in Resources */,
+				8BF5836E24E57D3E00C67697 /* SFMono-Heavy.otf in Resources */,
+				8BF5837524E57D5800C67697 /* SFMono-Semibold.otf in Resources */,
+				8BF5836F24E57D4100C67697 /* SFMono-HeavyItalic.otf in Resources */,
+				8BF5837324E57D5000C67697 /* SFMono-MediumItalic.otf in Resources */,
+				8BF5836C24E57D3800C67697 /* SFMono-Bold.otf in Resources */,
 				8B89B3C6246C823F00EA47E2 /* Preview Assets.xcassets in Resources */,
 				8B7AB0C524716FF200CE2B5B /* quicklook.png in Resources */,
 				8B89B3C3246C823F00EA47E2 /* Assets.xcassets in Resources */,
@@ -436,6 +511,7 @@
 				8B89B3FA246C828000EA47E2 /* CommandAPI.swift in Sources */,
 				8B89B429246C82D100EA47E2 /* ActivityIndicator.swift in Sources */,
 				8B89B419246C82A600EA47E2 /* Device.swift in Sources */,
+				8BF5837924E5840C00C67697 /* CodeScanner.swift in Sources */,
 				8B89B401246C828700EA47E2 /* Responses.swift in Sources */,
 				8B89B42C246C82D100EA47E2 /* Defaults.swift in Sources */,
 				8B89B415246C82A600EA47E2 /* Scripts.swift in Sources */,
@@ -615,6 +691,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.61;
 				DEVELOPMENT_ASSET_PATHS = "\"quicklook/Preview Content\"";
 				DEVELOPMENT_TEAM = 8K6TR7WW7Q;
 				ENABLE_PREVIEWS = YES;
@@ -624,7 +701,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21;
+				MARKETING_VERSION = 1.61;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toxicspu.quicklook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -637,6 +714,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.61;
 				DEVELOPMENT_ASSET_PATHS = "\"quicklook/Preview Content\"";
 				DEVELOPMENT_TEAM = 8K6TR7WW7Q;
 				ENABLE_PREVIEWS = YES;
@@ -646,7 +724,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21;
+				MARKETING_VERSION = 1.61;
 				PRODUCT_BUNDLE_IDENTIFIER = com.toxicspu.quicklook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

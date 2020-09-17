@@ -13,6 +13,7 @@ class ScriptsAPI {
     
     
     func getScripts(defaults: Defaults, completion: @escaping ([Responses.Scripts.Results]) -> ()){
+        print("Get Scripts")
         let url = "\(defaults.defaultURL)"+"/uapi/v1/scripts?page=0&page-size=500&sort=name%3Aasc"
         // Request options
         var request = URLRequest(url: URL(string:url)!)
@@ -24,13 +25,21 @@ class ScriptsAPI {
         let config = URLSessionConfiguration.default
         URLSession(configuration: config).dataTask(with: request) { (data, response, err) in
             
-            guard let data = data else {return}
-            
-            guard let scripts = try? JSONDecoder().decode(Responses.Scripts.self, from: data)else {return}
-            
-            DispatchQueue.main.async {
-                completion(scripts.results)
+            guard let data = data else {
+                print("Jenkum")
+                return}
+          
+            print(String(decoding: data, as: UTF8.self))
+            do{ let scripts = try JSONDecoder().decode(Responses.Scripts.self, from: data)
+               // print(scripts)
+                 completion(scripts.results)
+                return
             }
+            catch {
+                print("Nados")
+                print(error)
+                return}
+
         }.resume()
     }
     

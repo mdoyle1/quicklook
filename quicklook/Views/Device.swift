@@ -14,7 +14,9 @@ struct Device: View {
     @State var shareItem:String?
     @State var showingAlert:Bool = false
     var popupView:Share?
-
+     let tel = "tel://"
+    let pasteboard = UIPasteboard.general
+    
     func initShareData(){
         sharedSubject = "***DEVICE INFORMATION***"
         
@@ -42,57 +44,80 @@ struct Device: View {
                     VStack(alignment:.leading){
                         
                         NavigationLink(destination:MobileCommandView())
-                        {Text("Mobile Commands").modifier(ButtonFormat())}
+                        {Text("Mobile Commands").modifier(ButtonFormat())}.padding(.bottom, 10)
                         VStack(alignment:.leading){
                         Group{
                             VStack(alignment:.leading){ Text("Device Name: ").bold()
-                                Text(mobileDevice?.mobileDevice?.general?.name ?? "searching...")}.padding(.bottom, 10)
+                                Text(mobileDevice?.mobileDevice?.general?.name ?? "searching...")}
                             
                             HStack{
                                 Text("Asset Tag: ").bold()
                                 if mobileDevice?.mobileDevice?.general?.assetTag == "" {Text("Device not tagged")
-                                }else{Text(mobileDevice?.mobileDevice?.general?.assetTag ?? "searching...")}}.padding(.bottom, 10)
+                                }else{Text(mobileDevice?.mobileDevice?.general?.assetTag ?? "searching...")}}
                             
                             VStack(alignment:.leading){ Text("Serial: ").bold()
-                                Text(mobileDevice?.mobileDevice?.general?.serialNumber ?? "searching...")}.padding(.bottom, 10)
+                                Text(mobileDevice?.mobileDevice?.general?.serialNumber ?? "searching...")}
                             
                             HStack{ Text("Last Reported IP: ").bold()
-                                Text(mobileDevice?.mobileDevice?.general?.ipAddress ?? "searching...")}.padding(.bottom, 10)
+                                Text(mobileDevice?.mobileDevice?.general?.ipAddress ?? "searching...")}
                             
                             VStack(alignment:.leading){ Text("Last Inventory Update: ").bold()
-                                Text(mobileDevice?.mobileDevice?.general?.lastInventoryUpdate ?? "searching...")}.padding(.bottom, 10)
+                                Text(mobileDevice?.mobileDevice?.general?.lastInventoryUpdate ?? "searching...")}
                             
                             HStack{ Text("Storage Capacity: ").bold()
-                                Text(String(mobileDevice?.mobileDevice?.general?.capacity ?? 0)+"mb")}.padding(.bottom, 10)
+                                Text(String(mobileDevice?.mobileDevice?.general?.capacity ?? 0)+"mb")}
                             
                             HStack{ Text("Storage Available: ").bold()
-                                Text(String(mobileDevice?.mobileDevice?.general?.availableMB ?? 0)+"mb")}.padding(.bottom, 10)
+                                Text(String(mobileDevice?.mobileDevice?.general?.availableMB ?? 0)+"mb")}
                             
                             HStack{ Text("Primary MAC:").bold()
-                                Text(mobileDevice?.mobileDevice?.general?.wifiMACAddress ?? "searching...")}.padding(.bottom, 10)
+                                Button(action: {self.pasteboard.string = self.mobileDevice?.mobileDevice?.general?.wifiMACAddress ?? ""})
+                                {Text(mobileDevice?.mobileDevice?.general?.wifiMACAddress ?? "searching...")}}
                             
                             HStack{Text("OS Version: ").bold()
-                                Text(mobileDevice?.mobileDevice?.general?.osVersion ?? "searching...")}.padding(.bottom, 10)
+                                Text(mobileDevice?.mobileDevice?.general?.osVersion ?? "searching...")}
                             
                             VStack(alignment:.leading){ Text("Assigned User: ").bold()
-                                Text(mobileDevice?.mobileDevice?.location?.username ?? "searching...")}.padding(.bottom, 10)}
+                                Text(mobileDevice?.mobileDevice?.location?.username ?? "searching...")}
+                            
+                            }.padding(.bottom, 10)
+                            
                         Group{
                             VStack(alignment: .leading){
                                 Text("Office Phone: ")
-                                Text(mobileDevice?.mobileDevice?.location?.phone ?? "searching...").padding(.bottom, 10)
+                                Button(action:{
+                                    
+                                    let formattedString = self.tel+(self.mobileDevice?.mobileDevice?.location?.phone?.replacingOccurrences(of: "-", with: "") ?? "")
+                                    print(formattedString)
+                                    guard let url = URL(string: formattedString) else {
+                                        print("Shit")
+                                        return }
+                                    UIApplication.shared.open(url)
+                                })
+                                {Text(mobileDevice?.mobileDevice?.location?.phone ?? "searching...")}
                                 
                                 Text("Mobile Phone: ")
-                                Text(mobileDevice?.mobileDevice?.network?.phoneNumber ?? "searching...").padding(.bottom, 10)
+                                Button(action:{
+                                    let formattedString = self.tel+(self.mobileDevice?.mobileDevice?.network?.phoneNumber!.replacingOccurrences(of: "-", with: "") ?? "")
+                                    print(formattedString)
+                                    guard let url = URL(string: formattedString) else {
+                                        print("Shit")
+                                        return }
+                                    UIApplication.shared.open(url)
+                                }){
+                                    Text(mobileDevice?.mobileDevice?.network?.phoneNumber ?? "searching...")}
                                 
                                 Text("IMEI: ")
-                                Text(mobileDevice?.mobileDevice?.network?.imei ?? "searching...").padding(.bottom, 10)
+                                  Button(action: {self.pasteboard.string = self.mobileDevice?.mobileDevice?.network?.imei  ?? ""})
+                                  {Text(mobileDevice?.mobileDevice?.network?.imei ?? "searching...")}
                                 
                                 Text("ICCID: ")
-                                Text(mobileDevice?.mobileDevice?.network?.iccid ?? "searching...").padding(.bottom, 10)
+                                 Button(action: {self.pasteboard.string = self.mobileDevice?.mobileDevice?.network?.iccid  ?? ""})
+                                 {Text(mobileDevice?.mobileDevice?.network?.iccid ?? "searching...")}
                             }
                             
-                            }
-                        }.padding(.all, 10).background(Color(.blue).opacity(0.25)).cornerRadius(10)
+                            }.padding(.bottom, 10)
+                        }.padding(.all, 10).background(Color(.gray).opacity(0.25)).cornerRadius(10)
                         
                         
                         VStack(alignment:.center) {

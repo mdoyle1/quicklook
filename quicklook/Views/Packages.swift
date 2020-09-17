@@ -14,30 +14,54 @@ struct Packages: View {
 
      @EnvironmentObject var controlCenter: ControlCenter
      @State var packages: [Responses.Packages.Response] = []
-    @State private var searchTerm:String = ""
- 
-     func removeItems(at offsets: IndexSet){
-         //Get the index of the item your about to delete!
-         let itemIndex:Int = offsets.first!
-         print(self.packages[itemIndex].name)
-         print(self.packages[itemIndex].jamfId)
-         print("Deleting "+self.packages[itemIndex].name)
-         PackagesAPI().deletePackage(id: String(self.packages[itemIndex].jamfId))
-         self.packages.remove(atOffsets: offsets)
-            }
- 
+     @State private var searchTerm:String = ""
+     @State private var showingAlert = false
+    
+    
+    func removeItems(at offsets: IndexSet){
+        if searchTerm != "" {
+            let filteredPackages = packages.filter {
+                self.searchTerm.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchTerm)}
+            let itemIndex:Int = offsets.first!
+            print(filteredPackages[itemIndex].name)
+            print(filteredPackages[itemIndex].jamfId )
+            print("Deleting "+filteredPackages[itemIndex].name)
+            PackagesAPI().deletePackage(id: filteredPackages[itemIndex].jamfId.description)
+            self.packages = filteredPackages
+            self.packages.remove(atOffsets: offsets)
+            PackagesAPI().getPackages { (packages) in
+                self.packages = packages}
+        } else {
+            let itemIndex:Int = offsets.first!
+            print(self.packages[itemIndex].name)
+            print(self.packages[itemIndex].jamfId)
+            print("Deleting "+self.packages[itemIndex].name)
+            PackagesAPI().deletePackage(id: String(self.packages[itemIndex].jamfId))
+            self.packages.remove(atOffsets: offsets)
+        }
+    }
+    
  
      var body: some View {
         VStack{
         SearchBar(text:$searchTerm)
         
          List {
-            
              ForEach(packages.filter {
                  self.searchTerm.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchTerm)
              }) { package in
-                 Button(action: {print(package)})
+                 Button(action: {
+                    self.showingAlert = true
+                    print(package)
+                    self.controlCenter.packageId = package.jamfId
+                    self.controlCenter.packageName = package.name
+                    print(self.controlCenter.packageId ?? "")
+                    print(self.controlCenter.packageName)
+                 })
                  {Text(package.name)}}.onDelete(perform: removeItems)}
+            .alert(isPresented: $showingAlert) {
+                      Alert(title: Text("\(self.controlCenter.packageName) has been selected! "), message: Text("Go search for a computer to push the package to @ Main Menu > Computers.  Once you've found a computer press the Push Package button."), dismissButton: .default(Text("Got it!")))
+                  }
              .onAppear {PackagesAPI().getPackages { (packages) in
                  self.packages = packages
                  }

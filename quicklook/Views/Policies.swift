@@ -27,12 +27,27 @@ struct Policies: View {
     //REMOVE ITEMS FUNCTION
     func removeItems(at offsets: IndexSet){
         //Get the index of the item your about to delete!
-        let itemIndex:Int = offsets.first!
-        print(self.policies[itemIndex].name)
-        print(self.policies[itemIndex].jamfId)
-        print("Deleting "+self.policies[itemIndex].name)
-        PoliciesAPI().deletePolicy(id: String(self.policies[itemIndex].jamfId), completion:{})
-        self.policies.remove(atOffsets: offsets)
+        if searchTerm != "" {
+            let filteredPolicies = policies.filter {
+                self.searchTerm.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchTerm)}
+            let itemIndex:Int = offsets.first!
+            print(filteredPolicies[itemIndex].name)
+            print(filteredPolicies[itemIndex].jamfId ?? 0)
+            print("Deleting "+filteredPolicies[itemIndex].name)
+            PoliciesAPI().deletePolicy(id: filteredPolicies[itemIndex].jamfId?.description ?? "", completion:{})
+            self.policies = filteredPolicies
+            self.policies.remove(atOffsets: offsets)
+            PoliciesAPI().getPolicies { (policies) in
+                self.policies = policies}
+        } else {
+            let itemIndex:Int = offsets.first!
+            print(self.policies[itemIndex].name)
+            print(self.policies[itemIndex].jamfId ?? 0)
+            print("Deleting "+self.policies[itemIndex].name)
+            PoliciesAPI().deletePolicy(id: self.policies[itemIndex].jamfId?.description ?? "", completion:{})
+            self.policies.remove(atOffsets: offsets)
+            
+        }
     }
     
     //NAVIGATION BAR EDIT AND DELETE BUTTONS
@@ -46,8 +61,6 @@ struct Policies: View {
     }
     
     private var deleteButton: some View {
-        
-        
         if editMode == .inactive {return Button(action: {})
         {Image(systemName: "")
         }.foregroundColor(.red)
@@ -62,7 +75,6 @@ struct Policies: View {
             .font(.system(size: 40))
             .frame(width: 60.0, height: 60.0)
             .padding(.all, 8)
-            
         }
     }
     
@@ -75,10 +87,10 @@ struct Policies: View {
                 DispatchQueue.global().async {
                     self.policies.remove(at: index)
                     semaphore.wait()
-                    PoliciesAPI().deletePolicy(id: String(self.policiesToDelete[index].jamfId), completion: {
+                    PoliciesAPI().deletePolicy(id: String("\(self.controlCenter.policyId)"), completion: {
                         print(self.policiesToDelete[index].id)
-                        print("Deleting: \(self.policiesToDelete[index].name)")
-                        print("ID: \(self.policiesToDelete[index].jamfId)")
+                        print("Deleting: \(self.controlCenter.policyName)")
+                        print("ID: \(self.controlCenter.policyId)")
                         print("")})
                     semaphore.signal()
                 }
@@ -98,7 +110,7 @@ struct Policies: View {
                     self.searchTerm.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchTerm)})
                 {policy in
                     NavigationLink(destination: PolicyView().onAppear{
-                        self.controlCenter.policyId = String(policy.jamfId)
+                        self.controlCenter.policyId = policy.jamfId
                         self.controlCenter.policyName = policy.name
                         })
                     {Button(action: {})
@@ -114,7 +126,6 @@ struct Policies: View {
         }.navigationBarTitle("Policies")
             .navigationBarItems(trailing:
                 HStack {
-                    deleteButton
                     editButton}).environment(\.editMode, self.$editMode)}
 }
 
@@ -179,7 +190,7 @@ struct PolicyView: View {
                                     self.enabled = false
                                     self.policySwitch = "Enable"
                                     self.enableDissableColor = Color(.systemGreen)
-                                }}) {Text(self.policySwitch ?? "")
+                                }}) {Text(self.policySwitch?.description ?? "")
                                     .font(.headline).foregroundColor(Color.white).bold()
                                     .padding(.all, 10).background(self.enableDissableColor).cornerRadius(360.0)}.padding(.bottom, 10)
                             
@@ -448,7 +459,7 @@ struct PolicyView: View {
                 }.padding(.leading, 14)
                 Spacer() }
                 .onAppear{
-                    PoliciesAPI().policyDetails (id: self.controlCenter.policyId) { (policy) in
+                    PoliciesAPI().policyDetails (id: self.controlCenter.policyId ?? 0) { (policy) in
                         self.policy = policy
                         self.controlCenter.policy = policy
                         self.enabled = policy.policy.general?.enabled

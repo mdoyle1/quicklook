@@ -20,11 +20,16 @@ class Defaults : ObservableObject {
     @Published var defaultURL = UserDefaults.standard.string(forKey: Defaults.userDefaultURL) ?? ""
     @Published var usernameStore = UserDefaults.standard.string(forKey: Defaults.userDefaultUserName) ?? ""
     @Published var passwordStore = UserDefaults.standard.string(forKey: Defaults.userDefaultPassword) ?? ""
-
+   
+    
+   
+    
+    
     func clearCredentials(){
         defaultURL = ""
         usernameStore = ""
         passwordStore = ""
+       // saved = false
     }
     
     private var canc: AnyCancellable!

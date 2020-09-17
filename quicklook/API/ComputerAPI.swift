@@ -50,6 +50,8 @@ class ComputerAPI {
             
             print(computer.computer?.general.alt_mac_address ?? "")
             
+            print(computer.computer?.hardware.osVersion ?? "pacho")
+            
             print("")
             DispatchQueue.main.async {
                 completion(computer.self)

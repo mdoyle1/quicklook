@@ -56,15 +56,14 @@ class ControlCenter: ObservableObject {
     
     //Packages
     @Published var packagesJson:Responses.Packages?
-    @Published var packageId:Int?
+    @Published var packageId = ""
     @Published var packageName = ""
     @Published var dismiss = true
     @Published var packages: [Responses.Packages.Response] = []
     @Published var package: Responses.Packages.Response?
-    @Published var pushResponse: Bool = true
     
     //POLICIES
-    @Published var policyId:Int?
+    @Published var policyId = ""
     @Published var policyName = ""
     @Published var policy: Responses.PolicyCodable?
     @Published var showAlert = false
@@ -93,6 +92,7 @@ class ControlCenter: ObservableObject {
     
     //MOBILE CONFIGURATION PROFILE
     
+   
     
     
     

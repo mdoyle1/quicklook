@@ -46,13 +46,11 @@ struct SearchBar: UIViewRepresentable {
     }
     
     func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
-        let searchBar = UISearchBar(frame: .zero)
+        let searchBar = UISearchBar()
+        
         searchBar.returnKeyType = .search
         searchBar.delegate = context.coordinator
-        searchBar.backgroundImage = UIImage()
-//        searchBar.showsCancelButton = true
-        searchBar.searchBarStyle = .default
-        searchBar.placeholder = "Search..."
+        
         return searchBar
     }
     

@@ -65,9 +65,9 @@ struct Responses: Codable {
         
         struct Results:Codable, Identifiable, Hashable {
             var id = UUID()
-            var jamfId: Int
+            var jamfId: String
             var name: String
-            var categoryId: Int
+            var categoryId: String
             var categoryName: String
             var info: String
             var notes: String
@@ -117,9 +117,7 @@ struct Responses: Codable {
                 case ip_address = "ip_address"
                 case last_reported_ip = "last_reported_ip"
                 case location = "location"
-                
-            }
-            
+            }  
         }
         var computers: [Response]
         
@@ -148,7 +146,7 @@ struct Responses: Codable {
         
         struct Response: Codable, Hashable, Identifiable {
             var id = UUID()
-            var jamfId: Int
+            var jamfId: Int?
             var name: String
             enum CodingKeys:String, CodingKey{
                 case jamfId = "id"
@@ -457,6 +455,7 @@ struct Responses: Codable {
         let jamfId: Int?
         let name, udid: String?
         let computer: ComputerDetail?
+       
         
         enum CodingKeys: String, CodingKey {
             case jamfId = "id"
@@ -466,16 +465,147 @@ struct Responses: Codable {
         }
     }
     
+   
+    
     struct ComputerDetail: Codable, Hashable, Identifiable {
         var id = UUID()
         let general: GeneralComputer
+        let hardware: Hardware
         enum CodingKeys: String, CodingKey {
             case general = "general"
+            case hardware = "hardware"
         }
         
+        // MARK: - Hardware
+        struct Hardware: Codable, Hashable, Identifiable {
+            var id = UUID()
+            
+            let make, model, modelIdentifier, osName: String?
+            let osVersion, osBuild: String?
+            let masterPasswordSet: Bool?
+            let activeDirectoryStatus, servicePack, processorType, processorArchitecture: String?
+            let processorSpeed, processorSpeedMhz, numberProcessors, numberCores: Int?
+            let totalRAM, totalRAMMB: Int?
+            let bootROM: String?
+            let busSpeed, busSpeedMhz, batteryCapacity, cacheSize: Int?
+            let cacheSizeKB, availableRAMSlots: Int?
+            let opticalDrive, nicSpeed, smcVersion: String?
+            let bleCapable: Bool?
+            let sipStatus, gatekeeperStatus, xprotectVersion, institutionalRecoveryKey: String?
+            let diskEncryptionConfiguration: String?
+            let filevault2Users: [String]?
+            let storage: [Storage]?
+            let mappedPrinters: [MappedPrinter]?
+            
+            enum CodingKeys: String, CodingKey{
+                case make = "make"
+                case model = "model"
+                case modelIdentifier = "model_identifier"
+                case osName = "os_name"
+                case osVersion = "os_version"
+                case osBuild = "os_build"
+                case masterPasswordSet = "master_password_set"
+                case activeDirectoryStatus = "active_directory_status"
+                case servicePack = "service_pack"
+                case processorType = "processor_type"
+                case processorArchitecture = "processor_architecture"
+                case processorSpeed = "processor_speed"
+                case processorSpeedMhz = "processor_speed_mhz"
+                case numberProcessors = "number_processors"
+                case numberCores = "number_cores"
+                case totalRAM = "total_ram"
+                case totalRAMMB = "total_ram_mb"
+                case bootROM = "boot_rom"
+                case busSpeed = "bus_speed"
+                case busSpeedMhz = "bus_speed_mhz"
+                case batteryCapacity = "battery_capacity"
+                case cacheSize = "cache_size"
+                case cacheSizeKB = "cache_size_kb"
+                case availableRAMSlots = "available_ram_slots"
+                case opticalDrive = "optical_drive"
+                case nicSpeed = "nic_speed"
+                case smcVersion = "smc_version"
+                case bleCapable = "ble_capable"
+                case sipStatus = "sip_status"
+                case gatekeeperStatus = "gatekeeper_status"
+                case xprotectVersion = "xprotect_version"
+                case institutionalRecoveryKey = "institutional_recovery_key"
+                case diskEncryptionConfiguration = "disk_encryption_configuration"
+                case filevault2Users = "filevault2_users"
+                case storage = "storage"
+                case mappedPrinters = "mapped_printers"
+            
+            }
+        }
+        // MARK: - Storage
+        struct Storage: Codable, Hashable, Identifiable {
+            var id = UUID()
+            let disk, model, revision, serialNumber: String?
+            let size, driveCapacityMB: Int?
+            let connectionType, smartStatus: String?
+            let partitions: [Partition]?
+            
+          enum CodingKeys: String, CodingKey {
+            case disk = "disk"
+            case model = "model"
+            case revision = "revision"
+            case serialNumber = "serialNumber"
+            case size = "size"
+            case driveCapacityMB = "drive_capacity_mb"
+            case connectionType = "connection_type"
+            case smartStatus = "smart_status"
+            case partitions = "partitions"
+            }
+        }
+
+        // MARK: - Partition
+        struct Partition: Codable, Hashable, Identifiable {
+            var id = UUID()
+            let name: String?
+            let size: Int?
+            let type: String?
+            let partitionCapacityMB, percentageFull, availableMB: Int?
+            let filevaultStatus: String?
+            let filevaultPercent: Int?
+            let filevault2Status: String?
+            let filevault2Percent, bootDriveAvailableMB: Int?
+            let lvgUUID, lvUUID, pvUUID: String?
+            
+              enum CodingKeys: String, CodingKey {
+                case name = "name"
+                case size = "size"
+                case type = "type"
+                case partitionCapacityMB = "partition_capacity_mb"
+                case percentageFull = "percentage_full"
+                case availableMB = "available_mb"
+                case filevaultStatus = "filevault_status"
+                case filevaultPercent = "filevault_percent"
+                case filevault2Status = "filevault2_status"
+                case filevault2Percent = "filevault2_percent"
+                case bootDriveAvailableMB = "boot_drive_available_mb"
+                case lvgUUID = "lvg_uuid"
+                case lvUUID = "lv_uuid"
+                case pvUUID = "pv_uuid"
+            }
+            
+        }
+        
+        struct MappedPrinter: Codable, Hashable, Identifiable {
+            let id = UUID()
+            let name, uri, type, location: String?
+            
+              enum CodingKeys: String, CodingKey {
+                case name = "name"
+                case uri = "uri"
+                case type = "type"
+                case location = "location"
+            }
+            
+        }
         
         struct GeneralComputer: Codable, Hashable, Identifiable {
             var id = UUID()
+            var jamfID: Int?
             let ip_address: String?
             let last_reported_ip: String?
             let mac_address: String?
@@ -498,10 +628,11 @@ struct Responses: Codable {
             var lastCloudBackupDateUTC: String?
             var lastEnrolledDateEpoch: Int?
             var lastEnrolledDateUTC, distributionPoint, sus, netbootServer: String?
-            //              var site: Site?
             var itunesStoreAccountIsActive: Bool?
+       
             
             enum CodingKeys: String, CodingKey {
+                case jamfID = "id"
                 case ip_address = "ip_address"
                 case last_reported_ip = "last_reported_ip"
                 case mac_address = "mac_address"
@@ -537,7 +668,7 @@ struct Responses: Codable {
                 case sus = "sus"
                 case netbootServer = "netboot_server"
                 case itunesStoreAccountIsActive = "itunes_store_account_is_active"
-                
+               
             }
         }
         

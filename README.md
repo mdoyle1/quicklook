@@ -2,11 +2,10 @@
 
 _a quicklook into your Jamf inventory_
 
-[_Available in the Apple Store for iOS Devices!_](https://apps.apple.com/us/app/quicklook-jcs/id1513229388)
-
 - [About](#About)
 - [Login View](#loginview)
 - [Scripts](#scripts)
+- [Packages](#packages)
 - [Computers](#computers)
 - [Devices](#devices)
 - [Policies](#policies)
@@ -16,7 +15,7 @@ _a quicklook into your Jamf inventory_
 
 ## [About:](#About)
 
-Quicklook is my first iOS app.  It's designed to give Jamf Admins and auditors a quick look at the most commonly accessed Jamf Pro data and functions. Quicklook is designed, built, and maintained outside of Jamf as a side project to expand my programming skills. It is not affiliated with Jamf, it is not officially maintained by Jamf.
+Quicklook is designed to give Jamf Admins and auditors a quick look at the most commonly accessed Jamf Pro data and functions. Quicklook is designed, built, and maintained outside of Jamf as a side project to expand my programming skills. It is not affiliated with Jamf, it is not officially maintained by Jamf.
 
 
 ## [Login View:](#loginview)
@@ -28,9 +27,19 @@ It can also be cleared by hitting “Clear All?”
 ## [Scripts:](#scripts)
 
 Access and view all the scripts in your Jamf Pro instance.
-* Share JAMF scripts via messages, email or where ever!
+* Share JAMF scripts via messages or email.  
+* Copy scripts to pasteboard and paste them into your favorite IDE
 * Delete scripts by swiping left
+* Choose a script simply by pressing it. Goto a computer to and press push script!
 
+
+## [Packages:](#packages)
+
+Access and view all packages uploaded to Jamf Pro.
+* Select a package to push to a computer.  Goto a computer and press "Push Package"
+* Delete Packages with swipe left.
+
+***Packages and Scripts can be pushed to computers.  When using the Push Package/Script feature in the Computer View, a policy is created that runs at check-in, 1x to the selected computer.***
 
 ## [Computers:](#computers)
 
@@ -56,11 +65,11 @@ Displays a list of navigation links to your Jamf Pro policies. Upon selecting a 
 * Toggle a policy on and off
 * Delete a policy or select and delete multiple policies
 
-**Note:** *Upon initially setting this portion of the app up I noticed there were a ton of policies being displayed that were not visible in the Jamf UI.  I believe these policies are created by Jamf Remote. I went ahead and deleted them after taking a crash course on semaphores.*
+**Note:** *Policies named by (Date, Time, Username) will not be visable from the Web Console.  They were created by JAMF Remote or Quicklook JCS and not assigned a Catagory.*
 
 ## [iOS Configurations:](#iosconfigurations)
 * View all configuration profiles and payloads
-*  View scope, limitations and exclusions
+* View scope, limitations and exclusions
 
 ## [macOS Configurations:](#macosconfigurations)
 * View macOS available configuration profiles
@@ -69,8 +78,7 @@ Displays a list of navigation links to your Jamf Pro policies. Upon selecting a 
 ## [Going Forward:](#goingforward)
 My goal for this app is quick access to Jamf functions.
 Look for the following coming soon…
-- Create and edit policies on the fly
+- Deploy scripts to groups
 - Greater detail about each computer, applications and logs
-- WatchOS support, once I get a watch, just so I can reboot a device using my watch...
 
 > Written with [StackEdit](https://stackedit.io/).
