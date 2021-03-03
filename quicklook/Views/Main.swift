@@ -25,7 +25,7 @@ struct Main: View {
     var body: some View {
         VStack{
             if self.controlCenter.logout == false {
-            Menu()
+                Menu()
         }else {
             Login()
             }

@@ -64,10 +64,7 @@ class ScriptsAPI {
             }
             print(httpResponse.statusCode)
             print("Just Deleted Script")
-            
-            DispatchQueue.main.async {
-                
-            }
+        
         }.resume()
         
     }

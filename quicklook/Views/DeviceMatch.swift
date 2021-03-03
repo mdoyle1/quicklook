@@ -61,10 +61,19 @@ struct DeviceMatch: View {
                 ForEach (devices){ mobileDevice in
                     
                     VStack(alignment: .leading){
-                        NavigationLink(destination: Device().onAppear{
+                        NavigationLink(destination: Device(jamfID:  String("\(mobileDevice.jamfId)"), jamfName: String("\(mobileDevice.name ?? "")")).onAppear{
+                         
                             self.controlCenter.deviceId = String("\(mobileDevice.jamfId)")
                             self.controlCenter.deviceName = String("\(mobileDevice.name ?? "")")
-                        }){
+//                            MobileDeviceAPI().getDevice (id: self.controlCenter.deviceId) { (mobileDevice) in
+//                               // self.mobileDevice = mobileDevice
+//                                self.controlCenter.mobileDevice = mobileDevice
+//                                print(mobileDevice)
+//                            }
+                            
+                        })
+                        
+                        {
                             Button(action: {
                             }){
                                 Text("\(mobileDevice.name ?? "")\n\(mobileDevice.serialNumber ?? "")\nMAC: \(mobileDevice.wifiMACAddress ?? "Not Available")\nUsername: \(mobileDevice.username ?? "")\nAsset Tag: \(mobileDevice.assetTag ?? "N/A")")

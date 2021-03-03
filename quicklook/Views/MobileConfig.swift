@@ -18,7 +18,7 @@ struct MobileConfig: View {
     var body: some View {
         List {
             ForEach(configurations) { config in
-                NavigationLink(destination: MobileConfigDetailView().onAppear{
+                NavigationLink(destination: MobileConfigDetailView(jamfID:  String(config.jamfId?.description ?? "")).onAppear{
                     self.controlCenter.iosConfigId = String(config.jamfId?.description ?? "")
                     self.controlCenter.iosConfigName = config.name ?? ""})
                 {Button(action: {})
@@ -38,6 +38,7 @@ struct MobileConfigDetailView: View {
     @EnvironmentObject var controlCenter:ControlCenter
     @State var iosConfig:Responses.MobileConfigurationProfile?
     @State var allDevices:String = "true"
+    var jamfID:String
     @GestureState var scale: CGFloat = 1.0
     var body: some View {
         ScrollView{
@@ -239,7 +240,7 @@ struct MobileConfigDetailView: View {
                 
                 //ON APPEAR THE MOBILE CONFIG API IS RUN TO GET DEVICE DETAILS
                 //ITS COMPLETION HANDLER RETURNS THE IOS CONFIG DETAILS TO A LOCAL VARIABLE
-                MobileConfigAPI().mobileConfigDetails(id: self.controlCenter.iosConfigId) { (iosConfig) in
+                MobileConfigAPI().mobileConfigDetails(id: jamfID) { (iosConfig) in
                     self.iosConfig = iosConfig
                     self.allDevices = iosConfig.configuration_profile?.scope?.all_mobile_devices?.description ?? "false"
                     print(iosConfig)}

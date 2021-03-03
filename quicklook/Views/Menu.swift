@@ -23,7 +23,10 @@ struct Menu: View {
                 {Text("Scripts").modifier(ButtonFormat())}
                 
                 //PACKAGES
-                NavigationLink(destination: Packages())
+                NavigationLink(destination: Packages().onAppear{
+                    controlCenter.pushPackage = false
+                    controlCenter.pushScript = false
+                })
                 {Text("Packages").modifier(ButtonFormat())}
                 
                 

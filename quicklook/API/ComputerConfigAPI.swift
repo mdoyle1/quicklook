@@ -72,7 +72,7 @@ class ComputerConfigAPI{
         URLSession(configuration: config).dataTask(with: request) { (data, response, err) in
             guard let data = data else { return }
             
-            guard let configuration = try! JSONDecoder().decode(Responses.OsXConfigurationProfile?.self, from: data) else {
+            guard let configuration = try? JSONDecoder().decode(Responses.OsXConfigurationProfile?.self, from: data) else {
                 print ("Failed")
                 //  print(String(data:data, encoding: .utf8))
                 return}

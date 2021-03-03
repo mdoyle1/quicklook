@@ -37,8 +37,10 @@ class MobileDeviceAPI {
         URLSession(configuration: config).dataTask(with: request) { (data, response, err) in
             guard let data = data else { return }
             print(String(data: data, encoding: .utf8))
-            guard let mobileDevice = try! JSONDecoder().decode(Responses.MobileDevice?.self, from: data) else {
+            guard let mobileDevice = try? JSONDecoder().decode(Responses.MobileDevice?.self, from: data) else {
                 print ("Failed")
+                
+                
                 return}
             
             print("Got Computer.")
@@ -51,6 +53,16 @@ class MobileDeviceAPI {
             print(mobileDevice.mobileDevice?.general?.capacity ?? "")
             
             print(mobileDevice.mobileDevice?.general?.osVersion ?? "")
+            
+         
+            let date = NSDate(timeIntervalSince1970: TimeInterval(mobileDevice.mobileDevice?.general?.lastCloudBackupDateEpoch ?? 0)/1000)
+            let dateFormatter = DateFormatter()
+               dateFormatter.timeStyle = DateFormatter.Style.medium //Set time style
+               dateFormatter.dateStyle = DateFormatter.Style.medium //Set date style
+               dateFormatter.timeZone = .current
+            let localDate = dateFormatter.string(from: date as Date)
+            print(localDate)
+            print(mobileDevice.mobileDevice?.general?.id ?? "")
             
             print("")
             DispatchQueue.main.async {

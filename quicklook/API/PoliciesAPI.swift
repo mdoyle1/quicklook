@@ -70,7 +70,7 @@ class PoliciesAPI {
         URLSession(configuration: config).dataTask(with: request) { (data, response, err) in
             guard let data = data else { return }
             
-            guard let policy = try! JSONDecoder().decode(Responses.PolicyCodable?.self, from: data) else {
+            guard let policy = try? JSONDecoder().decode(Responses.PolicyCodable?.self, from: data) else {
                 
                 print ("Failed")
                 print(String(data:data, encoding: .utf8))
@@ -368,14 +368,14 @@ class PoliciesAPI {
             
             guard let httpResponse = response as? HTTPURLResponse,
                 (200...299).contains(httpResponse.statusCode) else {
-                    control.pushResponse = false
+                    control.pushPackageResponse = false
                     print("Bad Credentials")
                     print(response!)
                     return
             }
             
                  DispatchQueue.main.async {
-                    control.pushResponse = true
+                    control.pushPackageResponse = true
             }
         }.resume()
         sem.wait()
@@ -597,14 +597,16 @@ class PoliciesAPI {
             
             guard let httpResponse = response as? HTTPURLResponse,
                 (200...299).contains(httpResponse.statusCode) else {
-                    control.pushResponse = false
+        
+                    control.pushScriptResponse = false
+                
                     print("Bad Credentials")
                     print(response!)
                     return
             }
             
                  DispatchQueue.main.async {
-                    control.pushResponse = true
+                    control.pushPackageResponse = true
             }
         }.resume()
         sem.wait()

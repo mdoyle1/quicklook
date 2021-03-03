@@ -61,7 +61,8 @@ class ControlCenter: ObservableObject {
     @Published var dismiss = true
     @Published var packages: [Responses.Packages.Response] = []
     @Published var package: Responses.Packages.Response?
-    @Published var pushResponse: Bool = true
+    @Published var pushPackageResponse: Bool = true
+    @Published var pushScriptResponse: Bool = true
     
     //POLICIES
     @Published var policyId:Int?
@@ -86,6 +87,7 @@ class ControlCenter: ObservableObject {
     @Published var shareDevice:[String]?
     @Published var iosConfigId = ""
     @Published var iosConfigName = ""
+    @Published var lastIcloudBackup = ""
     
     //SCOPE
     @Published var allComputers: Responses.PolicyCodable?
@@ -93,8 +95,8 @@ class ControlCenter: ObservableObject {
     
     //MOBILE CONFIGURATION PROFILE
     
-    
-    
+    @Published var pushScript:Bool = false
+    @Published var pushPackage:Bool = false
     
 }
 

@@ -69,7 +69,7 @@ struct ComputerMatch: View {
                 ForEach (computers){ computer in
                     
                     VStack(alignment: .leading){
-                        NavigationLink(destination: Computer().onAppear{
+                        NavigationLink(destination: Computer(computerID: String(computer.jamfId)).onAppear{
                             self.controlCenter.computerId = String(computer.jamfId)
                             self.controlCenter.computerName = String(computer.name ?? "")
                         }){

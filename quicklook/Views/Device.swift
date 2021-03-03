@@ -11,6 +11,10 @@ import SwiftUI
 struct Device: View {
     @EnvironmentObject var controlCenter: ControlCenter
     @State var mobileDevice: Responses.MobileDevice?
+    var jamfID:String
+    var jamfName:String
+    var defaults:Defaults = Defaults()
+ 
     @State var shareItem:String?
     @State var showingAlert:Bool = false
     var popupView:Share?
@@ -47,9 +51,24 @@ struct Device: View {
                         {Text("Mobile Commands").modifier(ButtonFormat())}.padding(.bottom, 10)
                         VStack(alignment:.leading){
                         Group{
-                            VStack(alignment:.leading){ Text("Device Name: ").bold()
-                                Text(mobileDevice?.mobileDevice?.general?.name ?? "searching...")}
+                            VStack(alignment:.leading){
+                                
+                                Text("Device Name: ").bold()
+                                Text(mobileDevice?.mobileDevice?.general?.name ?? "searching...")}.padding(.bottom, 10)
+                           
+                            VStack(alignment:.leading){
+                                
+                                Text("Last iCloud Backup: ").bold()
+                                Text("\(NSDate(timeIntervalSince1970: TimeInterval(mobileDevice?.mobileDevice?.general?.lastCloudBackupDateEpoch ?? 0)/1000))")}
+                                .padding(.bottom, 10)
                             
+                            HStack{ Text("JAMF ID: ").bold()
+                                if #available(iOS 14.0, *) {
+                                    Link("\(mobileDevice?.mobileDevice?.general?.id ?? 0)", destination: URL(string: "\(defaults.defaultURL)/mobileDevices.html?id="+"\(mobileDevice?.mobileDevice?.general?.id ?? 0)")!)
+                                } else {
+                                    Text(String(mobileDevice?.mobileDevice?.general?.id ?? 0))}
+                                }   .padding(.bottom, 10)
+                            }
                             HStack{
                                 Text("Asset Tag: ").bold()
                                 if mobileDevice?.mobileDevice?.general?.assetTag == "" {Text("Device not tagged")
@@ -57,7 +76,8 @@ struct Device: View {
                             
                             VStack(alignment:.leading){ Text("Serial: ").bold()
                                 Text(mobileDevice?.mobileDevice?.general?.serialNumber ?? "searching...")}
-                            
+                        }
+                            Group {
                             HStack{ Text("Last Reported IP: ").bold()
                                 Text(mobileDevice?.mobileDevice?.general?.ipAddress ?? "searching...")}
                             
@@ -120,35 +140,32 @@ struct Device: View {
                         }.padding(.all, 10).background(Color(.gray).opacity(0.25)).cornerRadius(10)
                         
                         
-                        VStack(alignment:.center) {
-                            Button(action: {self.initShareData()
-                                Share().showView()}){Image(systemName:"square.and.arrow.up")
-                                    .font(.largeTitle)
-                                    .padding(.all, 10)
-                            }
-                            
-                            
-                        }
+                  
                     }.padding(.leading, 15)
                     
                     Spacer()
                 }
                 Spacer()
                 
-            }.onAppear {
-                print(self.controlCenter.deviceId)
-                MobileDeviceAPI().getDevice (id: self.controlCenter.deviceId) { (mobileDevice) in
-                    self.mobileDevice = mobileDevice
-                    self.controlCenter.mobileDevice = mobileDevice
-                    print(mobileDevice)
-                }
-            }
+            
         }.navigationBarTitle("Device Details")
+        .navigationBarItems(trailing: Button(action: {
+                                                self.initShareData()
+                                                Share().showView()}){Image(systemName:"square.and.arrow.up").font(.body).padding(.all, 10)})
+        .onAppear {
+            print(self.controlCenter.deviceId)
+            MobileDeviceAPI().getDevice (id: self.jamfID) { (mobileDevice) in
+                self.mobileDevice = mobileDevice
+                self.controlCenter.mobileDevice = mobileDevice
+                print(mobileDevice)
+            }
+        }
     }
     
     struct MobileCommandView: View {
         @EnvironmentObject var controlCenter: ControlCenter
         @State var showingAlert:Bool = false
+        @State var currentItem:MobileCommands = MobileCommands(key: "", value: "")
         struct MobileCommands:Identifiable {
             var id = UUID()
             var key:String
@@ -158,6 +175,7 @@ struct Device: View {
         var mobileCommands:[MobileCommands] = [
             MobileCommands(key:"RestartDevice",value:"Restart Device"),
             MobileCommands(key:"ShutDownDevice",value:"Shutdown Device"),
+            MobileCommands(key:"BlankPush",value:"Blank Push"),
             MobileCommands(key:"UpdateInventory",value:"Update Inventory"),
             MobileCommands(key:"ClearPasscode",value:"Clear Passcode"),
             MobileCommands(key:"UnmanageDevice",value:"Unmanage Device"),
@@ -179,12 +197,15 @@ struct Device: View {
         ]
         
         var body: some View {
-            List(mobileCommands) { item in
-                Button(action:{self.showingAlert = true})
+            List(mobileCommands.sorted(by:{$0.key < $1.key})) { item in
+                Button(action:{
+                    self.showingAlert = true
+                    currentItem = item
+                })
                 {Text(item.value).modifier(ButtonFormat())
                     .alert(isPresented:self.$showingAlert) {
-                        Alert(title: Text("\(item.value)?\n Are you sure?"), message: Text("Mobile Device: \(self.controlCenter.deviceName.description)"), primaryButton: .destructive(Text("Run Command")) {
-                            CommandAPI().JSSCommand(commandType:"mobiledevicecommands", command:item.key, deviceId: self.controlCenter.deviceId )
+                        Alert(title: Text("\(self.currentItem.value)?\n Are you sure?"), message: Text("Mobile Device: \(self.controlCenter.deviceName.description)"), primaryButton: .destructive(Text("Run Command")) {
+                            CommandAPI().JSSCommand(commandType:"mobiledevicecommands", command:self.currentItem.key, deviceId: self.controlCenter.deviceId )
                             print("Deleting...")
                             }, secondaryButton: .cancel())
                     }

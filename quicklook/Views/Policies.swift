@@ -72,8 +72,8 @@ struct Policies: View {
             self.deletePolicies()}) {
                 Image(systemName:"trash.circle")
         }.foregroundColor(.red)
-            .font(.system(size: 40))
-            .frame(width: 60.0, height: 60.0)
+            .font(.system(size: 30))
+            .frame(width: 40.0, height: 40.0)
             .padding(.all, 8)
         }
     }
@@ -109,7 +109,7 @@ struct Policies: View {
                 ForEach(policies.filter {
                     self.searchTerm.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchTerm)})
                 {policy in
-                    NavigationLink(destination: PolicyView().onAppear{
+                    NavigationLink(destination: PolicyView(policyID: policy.jamfId ?? 0).onAppear{
                         self.controlCenter.policyId = policy.jamfId
                         self.controlCenter.policyName = policy.name
                         })
@@ -124,9 +124,13 @@ struct Policies: View {
                 }
             }
         }.navigationBarTitle("Policies")
-            .navigationBarItems(trailing:
-                HStack {
-                    editButton}).environment(\.editMode, self.$editMode)}
+//            .navigationBarItems(trailing:
+//                HStack {
+//                  //  deleteButton
+//                    editButton
+//                }).environment(\.editMode, self.$editMode)
+        
+    }
 }
 
 
@@ -139,6 +143,7 @@ struct PolicyView: View {
     @State var allComputers:String?
     @State var serching:String = "searching..."
     @State var enableDissableColor:Color?
+    var policyID:Int
     
     
     var body: some View{
@@ -459,7 +464,7 @@ struct PolicyView: View {
                 }.padding(.leading, 14)
                 Spacer() }
                 .onAppear{
-                    PoliciesAPI().policyDetails (id: self.controlCenter.policyId ?? 0) { (policy) in
+                    PoliciesAPI().policyDetails (id: policyID ) { (policy) in
                         self.policy = policy
                         self.controlCenter.policy = policy
                         self.enabled = policy.policy.general?.enabled

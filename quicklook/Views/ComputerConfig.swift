@@ -17,7 +17,7 @@ struct ComputerConfig: View {
     var body: some View {
         List {
             ForEach(configurations) { config in
-                NavigationLink(destination: ComputerConfigDetailView().onAppear{
+                NavigationLink(destination: ComputerConfigDetailView(jamfID: String(config.jamfId?.description ?? "")).onAppear{
                     //STORE THE JAMF ID IN A SHARED VARIABLE FOR THE API CALL
                     self.controlCenter.osxConfigId = String(config.jamfId?.description ?? "")
                     self.controlCenter.osxConfigName = config.name ?? ""})
@@ -39,7 +39,7 @@ struct ComputerConfigDetailView: View {
     @EnvironmentObject var controlCenter: ControlCenter
     @State var osxConfig:Responses.OsXConfigurationProfile?
     @State var allDevices:String = "true"
-    
+    var jamfID:String
     var body: some View {
         ScrollView{
             HStack{
@@ -231,7 +231,7 @@ struct ComputerConfigDetailView: View {
                 }.padding(.leading, 14)
                 Spacer()
             } .onAppear{
-                ComputerConfigAPI().configDetails(id: self.controlCenter.osxConfigId) { (osxConfig) in
+                ComputerConfigAPI().configDetails(id: jamfID) { (osxConfig) in
                     self.osxConfig = osxConfig
                     self.allDevices = osxConfig.os_x_configuration_profile?.scope?.allComputers?.description ?? "false"
                     print(osxConfig)

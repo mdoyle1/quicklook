@@ -14,6 +14,7 @@ struct Computer: View {
     @State var computer: Responses.Computer?
     @State var policies: PoliciesAPI?
     let pasteboard = UIPasteboard.general
+    var computerID:String
     @State private var showingAlert:Bool = false
     @State private var showScriptAlert:Bool = false
     var mappedPrinters:[Responses.ComputerDetail.MappedPrinter] = []
@@ -48,59 +49,86 @@ struct Computer: View {
                         {Text("Computer Commands").modifier(ButtonFormat())}
                         
                         //MARK: - PUSH PACKAGE
-                        
-                        HStack(alignment: .center){
+                    
+                    HStack(alignment: .center){
+                        if self.controlCenter.packageName == "" {
+                            NavigationLink(destination: Packages().onAppear{
+                                self.controlCenter.pushPackage = true
+                            }){
+                                Text("Push Package").modifier(ButtonFormat())
+                            }
+                        }
+                        else {
+                            
                             Button(action:{ self.showingAlert = true}){
                                 Text("Push Package").modifier(ButtonFormat())}
                                 .alert(isPresented:self.$showingAlert) {
-                                    if self.controlCenter.packageName == "" {
-                                        return Alert(title: Text("Goto Main Menu > Packages and select a package to push!"), dismissButton: .default(Text("Got it!")))
-                                    } else {
-                                        return Alert(title: Text("Push Package\n \(self.controlCenter.packageName)?\n Are you sure?"), message: Text("Select 'Push Package' to continue.  A policy will be created with the current date, time and your username.  This can easily be deleted from the Main Menu > Policies section of Quicklook jcs "), primaryButton: .destructive(Text("Push Package")) {
-                                            self.packageWasPushed = true
-                                            PoliciesAPI().pushPackage(control: self.controlCenter, packageName: self.controlCenter.packageName, packageID: self.controlCenter.packageId ?? 0, computerID: self.computer?.computer?.general.jamfID ?? Int(), computerName: self.computer?.computer?.general.name ?? "", computerUDID: self.computer?.computer?.general.udid ?? "")
-                                            print("Push Package \(self.controlCenter.packageName) to \(self.controlCenter.computerName)")
-                                            }, secondaryButton: .cancel())}
-                            }.environmentObject(controlCenter)
-                            if self.packageWasPushed == false {
-                                Image(systemName: "hand.thumbsup.fill").foregroundColor(.clear)
-                            } else {
+                                    return Alert(title: Text("Push Package\n \(self.controlCenter.packageName)?\n Are you sure?"), message: Text("Select 'Push Package' to continue.  A policy will be created with the current date, time and your username.  This can easily be deleted from the Main Menu > Policies section of Quicklook jcs "), primaryButton: .destructive(Text("Push Package")) {
+                                        self.packageWasPushed = true
+                                        PoliciesAPI().pushPackage(control: self.controlCenter, packageName: packageName, packageID: packageID , computerID: self.computer?.computer?.general.jamfID ?? Int(), computerName: self.computer?.computer?.general.name ?? "", computerUDID: self.computer?.computer?.general.udid ?? "")
+                                        print("Push Package \(self.controlCenter.packageName) to \(self.controlCenter.computerName)")
+                                    }, secondaryButton: .cancel())}
+                        
+                    }
+                        
                                 if self.packageWasPushed {
-                                    if self.controlCenter.pushResponse == true {
+                                    if self.controlCenter.pushPackageResponse == true {
                                         Image(systemName: "hand.thumbsup.fill").foregroundColor(.green)
                                     }else {
                                         Image(systemName: "hand.thumbsdown.fill").foregroundColor(.red)}
                                 }
-                            }
+                            
+                        if self.controlCenter.packageName != "" {
+                            Text(self.controlCenter.packageName).font(.footnote).padding(.all, 5)
+                            Button(action: {
+                                self.packageWasPushed = false
+                                self.controlCenter.packageName.removeAll()
+                            }){Image(systemName: "x.circle.fill").foregroundColor(.red)}
                         }
+                        
+                    }
                             
                         //MARK: - PUSH SCRIPT
                   
                             HStack(alignment: .center){
+                                if  self.controlCenter.scriptName == "" {
+                                    NavigationLink(destination: Scripts().onAppear{
+                                        self.controlCenter.pushScript = true
+                                    }){
+                                        Text("Run Script").modifier(ButtonFormat())
+                                    }
+                                } else {
+
                                 Button(action:{ self.showScriptAlert = true}){
-                                    Text("Push Script").modifier(ButtonFormat())}
+                                    Text("Run Script").modifier(ButtonFormat())}
                                     .alert(isPresented:self.$showScriptAlert) {
-                                        if self.controlCenter.scriptName == "" {
-                                            return Alert(title: Text("Goto Main Menu > Scripts and select a script to push!"), dismissButton: .default(Text("Got it!")))
-                                        } else {
-                                            return Alert(title: Text("Push Script\n \(self.controlCenter.scriptName)?\n Are you sure?"), message: Text("Select 'Push Script' to continue.  A policy will be created with the current date, time and your username.  This can easily be deleted from the Main Menu > Policies section of Quicklook jcs "), primaryButton: .destructive(Text("Push Script")) {
+                              Alert(title: Text("Run Script\n \(self.controlCenter.scriptName)?\n Are you sure?"), message: Text("Select 'Run Script' to continue.  A policy will be created with the current date, time and your username.  This can easily be deleted from the Main Menu > Policies section of Quicklook jcs "), primaryButton: .destructive(Text("Run Script")) {
                                                 self.scriptWasPushed = true
                                                 PoliciesAPI().pushScript(control: self.controlCenter, scriptName: self.controlCenter.scriptName, scriptID: self.controlCenter.scriptId ?? "", computerID: self.computer?.computer?.general.jamfID ?? 0, computerName: self.computer?.computer?.general.name ?? "", computerUDID: self.computer?.computer?.general.udid ?? "")
                                                 print("Push Script \(self.controlCenter.scriptName) to \(self.controlCenter.computerName)")
                                                 }, secondaryButton: .cancel())}
-                                }.environmentObject(controlCenter)
-                                if self.scriptWasPushed == false {
-                                    Image(systemName: "hand.thumbsup.fill").foregroundColor(.clear)
-                                } else {
+                                    
+                          
                                     if self.scriptWasPushed {
-                                        if self.controlCenter.pushResponse == true {
+                                        if self.controlCenter.pushScriptResponse == true {
                                             Image(systemName: "hand.thumbsup.fill").foregroundColor(.green)
                                         }else {
-                                            Image(systemName: "hand.thumbsdown.fill").foregroundColor(.red)}
+                                            Image(systemName: "hand.thumbsdown.fill").foregroundColor(.red)
+                                        }
                                     }
-                                }
+                                
+                                    
+                                    if self.controlCenter.scriptName != "" {
+                                        Text(self.controlCenter.scriptName).font(.footnote).padding(.all, 5)
+                                        Button(action: {
+                                            self.scriptWasPushed = false
+                                            self.controlCenter.scriptName.removeAll()
+                                        }){Image(systemName: "x.circle.fill").foregroundColor(.red)}
+                                    }
+                                    
                             }
                         }
+                }
                             .padding(.all, 5)
                             
                         
@@ -161,7 +189,7 @@ struct Computer: View {
                 Spacer()
              
             }.onAppear {
-                ComputerAPI().getComputer (id: self.controlCenter.computerId) { (computer) in
+                ComputerAPI().getComputer (id: computerID) { (computer) in
                     self.computer = computer
                     self.controlCenter.computer = computer
                     print(computer)
@@ -178,6 +206,7 @@ struct Computer: View {
     struct ComputerCommandView: View {
         @EnvironmentObject var controlCenter: ControlCenter
         @State private var showingAlert:Bool = false
+        @State var currentItem:ComputerCommands = ComputerCommands(key: "", value: "")
         struct ComputerCommands:Identifiable {
             var id = UUID()
             var key:String
@@ -200,13 +229,15 @@ struct Computer: View {
         ]
         
         var body: some View {
-            List(computerCommands) { item in
-                Button(action:{self.showingAlert = true})
+            List(computerCommands.sorted(by:{$0.key < $1.key})) { item in
+                Button(action:{self.showingAlert = true
+                    self.currentItem = item
+                })
                 {Text(item.value).modifier(ButtonFormat())
                     .alert(isPresented:self.$showingAlert) {
-                        Alert(title: Text("\(item.value)?\n Are you sure?"), message: Text("Computer: \(self.controlCenter.computerName.description)"), primaryButton: .destructive(Text("Run Command")) {
-                            CommandAPI().JSSCommand(commandType:"computercommands", command:item.key, deviceId: self.controlCenter.computerId)
-                            print("Running Command \(item.key) on id:\(self.controlCenter.computerId)")
+                        Alert(title: Text("\(self.currentItem.value)?\n Are you sure?"), message: Text("Computer: \(self.controlCenter.computerName.description)"), primaryButton: .destructive(Text("Run Command")) {
+                            CommandAPI().JSSCommand(commandType:"computercommands", command:self.currentItem.key, deviceId: self.controlCenter.computerId)
+                            print("Running Command \(self.currentItem.key) on id:\(self.controlCenter.computerId)")
                             }, secondaryButton: .cancel())
                     }
                 }.navigationBarTitle("Computer Commands")

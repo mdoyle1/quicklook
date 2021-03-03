@@ -12,6 +12,7 @@ import SwiftUI
 
 struct Scripts: View {
     @EnvironmentObject var controlCenter: ControlCenter
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel = Defaults()
     @State var scripts: [Responses.Scripts.Results] = []
     @State private var firstLoader:Bool = true
@@ -51,14 +52,21 @@ struct Scripts: View {
                 ForEach(scripts.filter {
                     self.searchTerm.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchTerm)
                 }) { script in
+                    if self.controlCenter.pushScript == true {
+                        Button(action:{
+                            self.controlCenter.pushScript = false
+                            self.controlCenter.scriptId = String(script.jamfId)
+                            self.controlCenter.scriptName = script.name
+                            self.presentationMode.wrappedValue.dismiss()
+                        }){Text(script.name)}
+                    } else {
                     NavigationLink(destination: DownloadScripts().onAppear{
-                        
                         self.controlCenter.scriptId = String(script.jamfId)
                         self.controlCenter.scriptName = script.name
                         
                         ScriptsAPI().downloadScript(defaults:self.viewModel, id:String(script.jamfId), control:self.controlCenter)})
                     {Text(script.name)}
-                    
+                    }
                 }.onDelete(perform: removeItems)
                 
             }
@@ -80,6 +88,7 @@ struct Scripts: View {
     
     struct DownloadScripts: View {
         @EnvironmentObject var controlCenter: ControlCenter
+        @State var isPresented = false
          let pasteboard = UIPasteboard.general
         func initShareData(){
             sharedSubject = self.controlCenter.scriptName
@@ -92,22 +101,26 @@ struct Scripts: View {
                 Text("Press to copy, paste into your favorite editor!!!").font(.system(size: 10)) .italic().bold()
                //
                 }
-                Button(action: {
-                    self.pasteboard.string = self.controlCenter.scriptContents
-                })
-                {VStack(alignment:.leading){
+         
+                VStack(alignment:.leading){
                         Text(self.controlCenter.scriptContents).font(.custom("SFMono-Regular", size: 12))
-                            .foregroundColor(.primary)
-                            .padding(.all, 10).background(Color(.gray).opacity(0.25)).cornerRadius(10)
-                            .padding(.all, 10)
+                           
                   
                     
-                    }
+                }.onTapGesture{self.pasteboard.string = self.controlCenter.scriptContents}
                  
-                }
+                
+               
+                .foregroundColor(.primary)
+                .padding(.all, 10).background(Color(.gray).opacity(0.25)).cornerRadius(10)
+                .padding(.all, 10)
                 
                 VStack(alignment: .center){
-                    Text("Navigate to Main Menu > Computers\nSelect a computer to run the script.\nPress Push Script!!!").font(.system(size: 12)).italic().bold().multilineTextAlignment(.center)
+                    NavigationLink(destination: ComputerMatch()){Text("Push Script!").modifier(ButtonFormat())}
+                    Text("*The push script button above will take you to the computer search.  Find a computer and press the Run Script button.").font(.system(size: 10)).italic().bold().multilineTextAlignment(.center)
+                        .foregroundColor(.primary)
+                        .padding(.all, 10).background(Color(.gray).opacity(0.25)).cornerRadius(10)
+                        .padding(.all, 10)
                                  }
                 HStack{
                     Spacer()
